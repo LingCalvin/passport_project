@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Contract{% endblock %}
+{% block WIAWDP_Application_Menu %}
+{% include 'wiawdp/wiawdp_application_menu.html' %}
+{% endblock %}
+{% block content %}
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Modify Contract</h3>
+    </div>
+    <form method="post">
+        <div class="card-body">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <div class="card-footer">
+            <input class="btn btn-primary" type="submit" name="submit" value="Save Changes">
+        </div>
+    </form>
+</div>
+{% endblock content %}

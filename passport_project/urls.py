@@ -24,5 +24,6 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('pclients/', include('pclients.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('wiawdp/', include('wiawdp.urls'))
     # Add URL maps to redirect the base URL to the given application
 ]
