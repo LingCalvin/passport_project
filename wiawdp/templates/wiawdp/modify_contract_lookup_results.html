@@ -10,9 +10,6 @@
         </a>
     </li>
 {% endblock %}
-{% block WIAWDP_Application_Menu %}
-{% include 'wiawdp/wiawdp_application_menu.html' %}
-{% endblock %}
 {% block content %}
 <a href="{% url 'wiawdp:modify_contract_lookup' %}">New Search</a><br>
 {% if contract_list %}
