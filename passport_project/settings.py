@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'pclients.apps.PclientsConfig',
     'courses.apps.CoursesConfig',
-    'wiawdp.apps.WiawdpConfig'
+    'wiawdp.apps.WiawdpConfig',
+    'django_tables2'
 ]
 
 MIDDLEWARE = [
@@ -72,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },

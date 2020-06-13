@@ -2,9 +2,11 @@ from django.shortcuts import render
 from wiawdp.forms import FindStudentForm, ViewReportForm, ModifyContractLookupForm
 from django.urls import reverse_lazy
 from wiawdp.models import Contract, CareerPathway
-from django.views.generic import TemplateView, FormView, CreateView, UpdateView
+from django.views.generic import TemplateView, FormView, CreateView, UpdateView, ListView
 from datetime import datetime
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from wiawdp.tables import ContractTable, ContractTableEditable
+from django_tables2 import SingleTableView
 
 
 class IndexView(TemplateView):
@@ -16,15 +18,12 @@ class SearchView(PermissionRequiredMixin, FormView):
     template_name = 'wiawdp/index.html'
     form_class = FindStudentForm
 
-
-class ActiveContractView(PermissionRequiredMixin, TemplateView):
+class ActiveContractView(PermissionRequiredMixin, SingleTableView):
     permission_required = 'wiawdp.view_contract'
     template_name = 'wiawdp/active_contracts.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['active_contract_list'] = Contract.objects.filter(end_date__gte=datetime.today())
-        return context
+    model = Contract
+    table_data = Contract.objects.filter(end_date__gte=datetime.today())
+    table_class = ContractTableEditable
 
 
 class AddContractView(PermissionRequiredMixin, CreateView):
@@ -86,7 +85,7 @@ class ModifyContract(PermissionRequiredMixin, UpdateView):
     permission_required = 'wiawdp.change_contract'
     model = Contract
     template_name = 'wiawdp/modify_contract.html'
-    fields = ['client', 'workforce', 'end_date', 'performance']
+    fields = ['workforce', 'end_date', 'performance']
     success_url = reverse_lazy('wiawdp:active_contracts')
 
     def get_object(self):
