@@ -67,11 +67,11 @@ class SearchContractsView(PermissionRequiredMixin, FormView):
         if email:
             contract_list = contract_list.filter(client__email__iexact=email)
         if home_phone:
-            contract_list = contract_list.filter(client__home_phone__iexact=home_phone)
+            contract_list = contract_list.filter(client__homePhone=home_phone)
         if cell_phone:
-            contract_list = contract_list.filter(client__cell__phone__iexact=cell_phone)
+            contract_list = contract_list.filter(client__cellPhone__iexact=cell_phone)
         if zipcode:
-            contract_list = contract_list.filter(client__address__zipcode__iexact=zipcode)
+            contract_list = contract_list.filter(client__zipcode__iexact=zipcode)
         return render(self.request, 'wiawdp/search_contracts_result.html',
                       context={'active_contract_list': contract_list})
 
@@ -93,7 +93,7 @@ class ModifyContractLookupView(PermissionRequiredMixin, FormView):
     form_class = ModifyContractLookupForm
 
     def form_valid(self, form):
-        contract_list = Contract.objects.filter(client__uuid__exact=form.cleaned_data['student_id'])
+        contract_list = Contract.objects.filter(client__pk__exact=form.cleaned_data['student_id'])
         return render(self.request, 'wiawdp/modify_contract_lookup_results.html',
                       context={'contract_list': contract_list})
 

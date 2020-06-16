@@ -20,4 +20,4 @@ class FindStudentForm(forms.Form):
 
 
 class ModifyContractLookupForm(forms.Form):
-    student_id = forms.UUIDField()
+    student_id = forms.IntegerField()
