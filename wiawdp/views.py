@@ -13,11 +13,6 @@ class IndexView(TemplateView):
     template_name = 'wiawdp/index.html'
 
 
-class SearchView(PermissionRequiredMixin, FormView):
-    permission_required = 'wiawdp.view_contract'
-    template_name = 'wiawdp/index.html'
-    form_class = FindStudentForm
-
 class ActiveContractView(PermissionRequiredMixin, SingleTableView):
     permission_required = 'wiawdp.view_contract'
     template_name = 'wiawdp/active_contracts.html'
@@ -29,7 +24,7 @@ class ActiveContractView(PermissionRequiredMixin, SingleTableView):
 class AddContractView(PermissionRequiredMixin, CreateView):
     permission_required = 'wiawdp.add_contract'
     model = Contract
-    template_name = 'wiawdp/add_contract.html'
+    template_name = 'wiawdp/add_contract_form.html'
     success_url = reverse_lazy('wiawdp:active_contracts')
     fields = ['client', 'workforce', 'end_date', 'performance']
 
@@ -44,9 +39,9 @@ class ReportView(PermissionRequiredMixin, FormView):
         return render(self.request, 'wiawdp/report.html', )
 
 
-class SearchContractView(PermissionRequiredMixin, FormView):
+class SearchContractsView(PermissionRequiredMixin, FormView):
     permission_required = ('wiawdp.view_contract', 'wiawdp.view_person')
-    template_name = 'wiawdp/search_contracts.html'
+    template_name = 'wiawdp/search_contracts_form.html'
     form_class = FindStudentForm
 
     def form_valid(self, form):
@@ -81,10 +76,10 @@ class SearchContractView(PermissionRequiredMixin, FormView):
                       context={'active_contract_list': contract_list})
 
 
-class ModifyContract(PermissionRequiredMixin, UpdateView):
+class ModifyContractView(PermissionRequiredMixin, UpdateView):
     permission_required = 'wiawdp.change_contract'
     model = Contract
-    template_name = 'wiawdp/modify_contract.html'
+    template_name = 'wiawdp/modify_contract_form.html'
     fields = ['workforce', 'end_date', 'performance']
     success_url = reverse_lazy('wiawdp:active_contracts')
 
@@ -92,9 +87,9 @@ class ModifyContract(PermissionRequiredMixin, UpdateView):
         return Contract.objects.get(pk=self.request.GET.get('contract_id'))
 
 
-class ModifyContractLookup(PermissionRequiredMixin, FormView):
+class ModifyContractLookupView(PermissionRequiredMixin, FormView):
     permission_required = 'wiawdp.change_contract'
-    template_name = 'wiawdp/modify_contract_lookup.html'
+    template_name = 'wiawdp/modify_contract_lookup_form.html'
     form_class = ModifyContractLookupForm
 
     def form_valid(self, form):
@@ -105,6 +100,7 @@ class ModifyContractLookup(PermissionRequiredMixin, FormView):
 
 class CareerPathwayView(TemplateView):
     template_name = 'wiawdp/career_pathways.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['pathways'] = CareerPathway.objects.all()

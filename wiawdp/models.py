@@ -1,5 +1,4 @@
 from django.db import models
-# from pclients.models import Pclient
 import uuid
 from django.contrib.auth.models import User
 
