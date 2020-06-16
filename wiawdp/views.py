@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from wiawdp.forms import FindStudentForm, ViewReportForm, ModifyContractLookupForm
 from django.urls import reverse_lazy
-from wiawdp.models import Contract, CareerPathway
+from wiawdp.models import Contract, WIAWDP
 from django.views.generic import TemplateView, FormView, CreateView, UpdateView, DeleteView
 from datetime import datetime
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -98,12 +98,12 @@ class ModifyContractLookupView(PermissionRequiredMixin, FormView):
                       context={'contract_list': contract_list})
 
 
-class CareerPathwayView(TemplateView):
-    template_name = 'wiawdp/career_pathways.html'
+class WIAWDPView(TemplateView):
+    template_name = 'wiawdp/programs.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['pathways'] = CareerPathway.objects.all()
+        context['pathways'] = WIAWDP.objects.all()
         return context
 
 

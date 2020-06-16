@@ -25,7 +25,7 @@ class Contract(models.Model):
     # status = models.CharField(max_length=8, choices=STATUS_CHOICES)
 
 
-class CareerPathway(models.Model):
+class WIAWDP(models.Model):
     career_pathway = models.CharField(max_length=200)
     cip_code = models.CharField(max_length=7)
     program_title = models.CharField(max_length=200)
