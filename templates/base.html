@@ -170,6 +170,7 @@
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
+    {% block  sidebar %}
     <aside class="main-sidebar navbar sidebar-dark-lightblue elevation-4">
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link navbar-dark">
@@ -274,21 +275,9 @@
                         {% endblock %}
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/charts/chartjs.html" class="nav-link">
+                                <a href="{% url 'students:student_list' %}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>ChartJS</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/charts/flot.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Flot</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="pages/charts/inline.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Inline</p>
+                                    <p>List Students</p>
                                 </a>
                             </li>
                         </ul>
@@ -365,27 +354,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="pages/forms/general.html" class="nav-link">
+                                    <a href="{% url 'schedules:schedulelist' %}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>General Elements</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/forms/advanced.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Advanced Elements</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/forms/editors.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Editors</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/forms/validation.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Validation</p>
+                                        <p>List Schedule</p>
                                     </a>
                                 </li>
                             </ul>
@@ -479,11 +450,11 @@
                         </a>
                     </li>
                     <li class="nav-header">Administration</li>
-                    {% if perms.home.can_list_employees or perms.home.add_employee %}
-                        {% block Employee %}
+                    {% if perms.home.can_list_userprofiles or perms.home.add_userprofile %}
+                        {% block UserProfile %}
                         {% endblock %}
                     {% endif %}
-                    {% if perms.home.can_list_courses or perms.home.add_course %}
+                    {% if perms.courses.can_list_courses or perms.courses.add_course %}
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-table"></i>
@@ -492,7 +463,7 @@
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
-                            {% if perms.home.add_employee %}
+                            {% if perms.courses.add_course %}
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a href={% url 'courses:course-new' %} class="nav-link">
@@ -502,10 +473,10 @@
                                     </li>
                                 </ul>
                             {% endif %}
-                            {% if perms.home.can_list_employees %}
+                            {% if perms.courses.can_list_courses %}
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href={% url 'courses:courses' %} class="nav-link">
+                                        <a href={% url 'courses:list_courses' %} class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>List/Search Course</p>
                                         </a>
@@ -528,7 +499,7 @@
         </div>
         <!-- /.sidebar -->
     </aside>
-
+    {% endblock %}
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->

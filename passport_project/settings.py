@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'pclients.apps.PclientsConfig',
     'courses.apps.CoursesConfig',
     'wiawdp.apps.WiawdpConfig',
-    'django_tables2'
+    'django_tables2',
+    'students.apps.StudentsConfig',
+    'schedules.apps.SchedulesConfig',
 ]
 
 MIDDLEWARE = [
