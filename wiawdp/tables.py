@@ -14,9 +14,13 @@ class ContractTableEditable(tables.Table):
     pk = tables.Column(verbose_name='RecId')
     full_name = tables.Column(accessor='client.full_name', order_by=('client__first_name', 'client__last_name'))
     actions = tables.TemplateColumn("""
-<form method="GET" action="{% url 'wiawdp:modify_contract' %}">
+<form method="get" action="{% url 'wiawdp:modify_contract' %}">
     <input type="hidden" name="contract_id" value="{{ record.id }}">
     <input type="submit" value="Edit" class="btn btn-info">
+</form>
+<form method="get" action="{% url 'wiawdp:delete_contract' %}">
+    <input type="hidden" name="pk" value="{{ record.pk }}">
+    <input type="submit" value="Delete" class="btn btn-danger">
 </form>
     """, orderable=False)
 

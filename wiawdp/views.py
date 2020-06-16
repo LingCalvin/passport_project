@@ -2,7 +2,7 @@ from django.shortcuts import render
 from wiawdp.forms import FindStudentForm, ViewReportForm, ModifyContractLookupForm
 from django.urls import reverse_lazy
 from wiawdp.models import Contract, CareerPathway
-from django.views.generic import TemplateView, FormView, CreateView, UpdateView, ListView
+from django.views.generic import TemplateView, FormView, CreateView, UpdateView, DeleteView
 from datetime import datetime
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from wiawdp.tables import ContractTable, ContractTableEditable
@@ -105,3 +105,11 @@ class CareerPathwayView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['pathways'] = CareerPathway.objects.all()
         return context
+
+
+class DeleteContractView(DeleteView):
+    model = Contract
+    success_url = reverse_lazy('wiawdp:active_contracts')
+
+    def get_object(self, queryset=None):
+        return Contract.objects.get(pk=self.request.GET.get('pk'))
