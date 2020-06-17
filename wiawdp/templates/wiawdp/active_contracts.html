@@ -4,7 +4,8 @@
 
 {% block title %}Active Contracts{% endblock %}
 {% block content %}
-<div class="card">
-    {% render_table table %}
-</div>
+    {% include 'wiawdp/contract_confirm_delete_modal.html' %}
+    <div class="card">
+        {% render_table table %}
+    </div>
 {% endblock content %}

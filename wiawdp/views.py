@@ -5,7 +5,7 @@ from wiawdp.models import Contract, WIAWDP
 from django.views.generic import TemplateView, FormView, CreateView, UpdateView, DeleteView
 from datetime import datetime
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from wiawdp.tables import ContractTable, ContractTableEditable
+from wiawdp.tables import ContractTable
 from django_tables2 import SingleTableView
 
 
@@ -18,8 +18,13 @@ class ActiveContractView(PermissionRequiredMixin, SingleTableView):
     template_name = 'wiawdp/active_contracts.html'
     model = Contract
     table_data = Contract.objects.filter(end_date__gte=datetime.today())
-    table_class = ContractTableEditable
+    table_class = ContractTable
 
+    def get_table_kwargs(self):
+        user = self.request.user
+        if user.has_perms('wiawdp.change_contract') or user.has_perms('wiawdp.delete_contract'):
+            return super(ActiveContractView, self).get_table_kwargs()
+        return {'exclude': ('actions',)}
 
 class AddContractView(PermissionRequiredMixin, CreateView):
     permission_required = 'wiawdp.add_contract'
@@ -112,4 +117,4 @@ class DeleteContractView(DeleteView):
     success_url = reverse_lazy('wiawdp:active_contracts')
 
     def get_object(self, queryset=None):
-        return Contract.objects.get(pk=self.request.GET.get('pk'))
+        return Contract.objects.get(pk=self.request.POST.get('pk'))
