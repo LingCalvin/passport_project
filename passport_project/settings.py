@@ -39,12 +39,13 @@ INSTALLED_APPS = [
     # Added from external apps
     'django_filters',
     # 'django_extensions',
+    'django_tables2',
+    'phonenumber_field',
     # Added by this project
     'home.apps.HomeConfig',
     'pclients.apps.PclientsConfig',
     'courses.apps.CoursesConfig',
     'wiawdp.apps.WiawdpConfig',
-    'django_tables2',
     'students.apps.StudentsConfig',
     'schedules.apps.SchedulesConfig',
 ]

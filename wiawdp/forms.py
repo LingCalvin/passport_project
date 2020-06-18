@@ -1,5 +1,5 @@
 from django import forms
-
+from phonenumber_field.formfields import PhoneNumberField
 
 class ViewReportForm(forms.Form):
     start_date = forms.DateTimeField(widget=forms.DateInput(attrs={'type': 'date'}))
@@ -14,8 +14,8 @@ class FindStudentForm(forms.Form):
     last_name = forms.CharField(max_length=200, required=False)
     ssn = forms.CharField(max_length=11, required=False)
     email = forms.EmailField(required=False)
-    home_phone = forms.CharField(max_length=50, required=False)
-    cell_phone = forms.CharField(max_length=50, required=False)
+    home_phone = PhoneNumberField(required=False)
+    cell_phone = PhoneNumberField(required=False)
     zipcode = forms.CharField(max_length=20, required=False)
 
 

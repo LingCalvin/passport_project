@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from students.models import Student
+from django.core.exceptions import ValidationError
 
 
 class Workforce(models.Model):
@@ -9,20 +10,26 @@ class Workforce(models.Model):
     def __str__(self):
         return self.workforce
 
+def validate_performance(value):
+    if value < 1 or value > 10:
+        raise ValidationError(f'{value} is not between 1 and 10 inclusive')
 
+
+PERFORMANCE_CHOICES = [
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5)
+]
 class Contract(models.Model):
-    # STATUS_CHOICES = [
-    #     ('ACTIVE', 'Active'),
-    #     ('INACTIVE', 'Inactive')
-    # ]
     client = models.ForeignKey(Student, on_delete=models.CASCADE)
     workforce = models.ForeignKey(Workforce, null=True, on_delete=models.CASCADE)
     end_date = models.DateTimeField()
-    performance = models.IntegerField(null=True, blank=True)
+    performance = models.IntegerField(null=True, blank=True, choices=PERFORMANCE_CHOICES)
 
     def __str__(self):
         return f'{self.client} - {self.workforce} - {self.end_date}'
-    # status = models.CharField(max_length=8, choices=STATUS_CHOICES)
 
 
 class WIAWDP(models.Model):
