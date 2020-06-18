@@ -65,11 +65,15 @@ class Address(models.Model):
 
 
 class Person(models.Model):
+    MR = 'Mr'
+    MRS = 'Mrs'
+    MS = 'Ms'
+    NONE = 'None'
     SALUTATION = (
-        ('Mr', 'Mr'),
-        ('Mrs', 'Mrs'),
-        ('Ms', 'Ms'),
-        ('None', 'None'),
+        (MR, 'Mr'),
+        (MRS, 'Mrs'),
+        (MS, 'Ms'),
+        (NONE, 'None'),
     )
     uuid = models.UUIDField(unique=True, primary_key=True, default=uuid.uuid4, editable=False)
     company_name = models.CharField(max_length=80)
