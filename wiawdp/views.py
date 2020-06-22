@@ -1,12 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from wiawdp.forms import FindStudentForm, ViewReportForm, ModifyContractLookupForm
 from django.urls import reverse_lazy
 from wiawdp.models import Contract, WIAWDP
-from django.views.generic import TemplateView, FormView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, FormView, CreateView, UpdateView, DeleteView, View
 from datetime import datetime
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from wiawdp.tables import ContractTable
-from django_tables2 import SingleTableView
+from wiawdp.tables import ContractTable, WIAWDPTable
+from django_tables2 import SingleTableView, SingleTableMixin
 
 
 class IndexView(TemplateView):
@@ -26,6 +26,7 @@ class ActiveContractView(PermissionRequiredMixin, SingleTableView):
             return super(ActiveContractView, self).get_table_kwargs()
         return {'exclude': ('actions',)}
 
+
 class AddContractView(PermissionRequiredMixin, CreateView):
     permission_required = 'wiawdp.add_contract'
     model = Contract
@@ -41,15 +42,42 @@ class ReportView(PermissionRequiredMixin, FormView):
     success_url = reverse_lazy('wiawdp:index')
 
     def form_valid(self, form):
-        return render(self.request, 'wiawdp/report.html', )
+        return render(self.request, 'wiawdp/report.html')
 
 
-class SearchContractsView(PermissionRequiredMixin, FormView):
-    permission_required = ('wiawdp.view_contract', 'wiawdp.view_person')
-    template_name = 'wiawdp/search_contracts_form.html'
-    form_class = FindStudentForm
+class FormTableView(SingleTableMixin, FormView):
+    result_template_name = None
+
+    def filter_table_data(self, form):
+        return None
+
+    def get_context_data(self, **kwargs):
+        context = super(FormView, self).get_context_data(**kwargs)
+        if 'form' not in context or not context['form'].is_valid():
+            return context
+        table = self.get_table(**self.get_table_kwargs())
+        context[self.get_context_table_name(table)] = table
+        return context
 
     def form_valid(self, form):
+        self.table_data = self.filter_table_data(form)
+        return render(self.request, self.result_template_name, context=self.get_context_data(form=form))
+
+
+class SearchContractsView(PermissionRequiredMixin, FormTableView):
+    permission_required = ('wiawdp.view_contract', 'wiawdp.view_person')
+    template_name = 'wiawdp/search_contracts_form.html'
+    result_template_name = 'wiawdp/search_contracts_results.html'
+    form_class = FindStudentForm
+    table_class = ContractTable
+
+    def get_table_kwargs(self):
+        return {
+            'empty_text': 'No results matching query.'
+        }
+
+    def filter_table_data(self, form):
+        print(Contract.objects.none())
         contract_list = Contract.objects
         first_name = form.cleaned_data['first_name']
         last_name = form.cleaned_data['last_name']
@@ -60,8 +88,7 @@ class SearchContractsView(PermissionRequiredMixin, FormView):
         zipcode = form.cleaned_data['zipcode']
 
         if not any((first_name, last_name, ssn, email, home_phone, cell_phone, zipcode)):
-            return render(self.request, 'wiawdp/search_contracts_result.html',
-                          context={'active_contract_list': []})
+            return Contract.objects.none()
 
         if first_name:
             contract_list = contract_list.filter(client__first_name__iexact=first_name)
@@ -77,8 +104,8 @@ class SearchContractsView(PermissionRequiredMixin, FormView):
             contract_list = contract_list.filter(client__cellPhone__iexact=cell_phone)
         if zipcode:
             contract_list = contract_list.filter(client__zipcode__iexact=zipcode)
-        return render(self.request, 'wiawdp/search_contracts_result.html',
-                      context={'active_contract_list': contract_list})
+
+        return contract_list
 
 
 class ModifyContractView(PermissionRequiredMixin, UpdateView):
@@ -92,24 +119,27 @@ class ModifyContractView(PermissionRequiredMixin, UpdateView):
         return Contract.objects.get(pk=self.request.GET.get('contract_id'))
 
 
-class ModifyContractLookupView(PermissionRequiredMixin, FormView):
+class ModifyContractLookupView(PermissionRequiredMixin, FormTableView):
     permission_required = 'wiawdp.change_contract'
     template_name = 'wiawdp/modify_contract_lookup_form.html'
+    result_template_name = 'wiawdp/modify_contract_lookup_results.html'
     form_class = ModifyContractLookupForm
+    table_class = ContractTable
 
-    def form_valid(self, form):
-        contract_list = Contract.objects.filter(client__pk__exact=form.cleaned_data['student_id'])
-        return render(self.request, 'wiawdp/modify_contract_lookup_results.html',
-                      context={'contract_list': contract_list})
+    def get_table_kwargs(self):
+        return {
+            'empty_text': 'No results matching query.'
+        }
+
+    def filter_table_data(self, form):
+        return Contract.objects.filter(client__pk__exact=form.cleaned_data['student_id'])
 
 
-class WIAWDPView(TemplateView):
+class WIAWDPView(SingleTableView):
+    model = WIAWDP
+    table_data = WIAWDP.objects.all()
+    table_class = WIAWDPTable
     template_name = 'wiawdp/programs.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['pathways'] = WIAWDP.objects.all()
-        return context
 
 
 class DeleteContractView(DeleteView):

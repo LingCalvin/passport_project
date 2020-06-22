@@ -1,4 +1,4 @@
-from wiawdp.models import Contract
+from wiawdp.models import Contract, WIAWDP
 import django_tables2 as tables
 
 
@@ -14,3 +14,10 @@ class ContractTable(tables.Table):
         model = Contract
         template_name = 'django_tables2/bootstrap.html'
         fields = ('pk', 'client', 'workforce', 'end_date', 'performance')
+
+
+class WIAWDPTable(tables.Table):
+    class Meta:
+        model = WIAWDP
+        template_name = 'django_tables2/bootstrap.html'
+        exclude = ('id',)
