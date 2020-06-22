@@ -42,12 +42,14 @@ INSTALLED_APPS = [
     'django_tables2',
     'phonenumber_field',
     # Added by this project
+    'django_tables2',
     'home.apps.HomeConfig',
-    'pclients.apps.PclientsConfig',
     'courses.apps.CoursesConfig',
     'wiawdp.apps.WiawdpConfig',
     'students.apps.StudentsConfig',
     'schedules.apps.SchedulesConfig',
+    'wiawdp.apps.WiawdpConfig',
+    'billing.apps.BillingConfig',
 ]
 
 MIDDLEWARE = [

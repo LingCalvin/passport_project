@@ -23,8 +23,8 @@ class ActiveContractView(PermissionRequiredMixin, SingleTableView):
     def get_table_kwargs(self):
         user = self.request.user
         if user.has_perms('wiawdp.change_contract') or user.has_perms('wiawdp.delete_contract'):
-            return super(ActiveContractView, self).get_table_kwargs()
-        return {'exclude': ('actions',)}
+            return {'empty_text': 'No active contracts.'}
+        return {'exclude': ('actions',), 'empty_text': 'No active contracts.'}
 
 
 class AddContractView(PermissionRequiredMixin, CreateView):

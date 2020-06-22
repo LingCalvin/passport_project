@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from students.models import Student
-from django.core.exceptions import ValidationError
 
 
 class Workforce(models.Model):
@@ -9,10 +8,6 @@ class Workforce(models.Model):
 
     def __str__(self):
         return self.workforce
-
-def validate_performance(value):
-    if value < 1 or value > 10:
-        raise ValidationError(f'{value} is not between 1 and 10 inclusive')
 
 
 PERFORMANCE_CHOICES = [

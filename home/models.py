@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from pclients.models import Paddress
 import uuid
 from phonenumber_field.modelfields import PhoneNumberField
 
