@@ -23,7 +23,6 @@ urlpatterns = [
     path('', home_views.user_login, name='user_login'),
     path('home/', include('home.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('wiawdp/', include('wiawdp.urls')),
     path('courses/', include('courses.urls')),
     path('students/', include('students.urls')),
     path('schedules/', include('schedules.urls')),
