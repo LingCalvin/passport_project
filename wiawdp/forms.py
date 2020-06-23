@@ -2,8 +2,8 @@ from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 
 class ViewReportForm(forms.Form):
-    start_date = forms.DateTimeField(widget=forms.DateInput(attrs={'type': 'date'}))
-    end_date = forms.DateTimeField(widget=forms.DateInput(attrs={'type': 'date'}))
+    start_date = forms.DateField()
+    end_date = forms.DateField()
     eatontown = forms.BooleanField(required=False)
     fairfield = forms.BooleanField(required=False)
     south_plainfield = forms.BooleanField(required=False)

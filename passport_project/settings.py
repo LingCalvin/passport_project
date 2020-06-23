@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     # Added from external apps
     'django_filters',
     # 'django_extensions',
+    # Added by this project
     'django_tables2',
     'phonenumber_field',
-    # Added by this project
     'home.apps.HomeConfig',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
