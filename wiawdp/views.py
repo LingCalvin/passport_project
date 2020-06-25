@@ -35,15 +35,6 @@ class AddContractView(PermissionRequiredMixin, CreateView):
     fields = ['client', 'workforce', 'end_date', 'performance']
 
 
-class ReportView(PermissionRequiredMixin, FormView):
-    permission_required = 'wiawdp.view_contract'
-    template_name = 'wiawdp/view_report.html'
-    form_class = ViewReportForm
-    success_url = reverse_lazy('wiawdp:index')
-
-    def form_valid(self, form):
-        return render(self.request, 'wiawdp/report.html')
-
 
 class FormTableView(SingleTableMixin, FormView):
     result_template_name = None
@@ -133,6 +124,38 @@ class ModifyContractLookupView(PermissionRequiredMixin, FormTableView):
 
     def filter_table_data(self, form):
         return Contract.objects.filter(client__pk__exact=form.cleaned_data['student_id'])
+
+class ReportView(PermissionRequiredMixin, FormTableView):
+    permission_required = 'wiawdp.view_wiawdp'
+    template_name = 'wiawdp/view_report.html'
+    result_template_name = 'wiawdp/report.html'
+    form_class = ViewReportForm
+    success_url = reverse_lazy('wiawdp:index')
+    model = WIAWDP
+    table_class = WIAWDPTable
+
+    def get_table_kwargs(self):
+        return {
+            'empty_text': 'No results matching query.'
+        }
+
+    def filter_table_data(self, form):
+        start_date = form.cleaned_data['start_date']
+        end_date = form.cleaned_data['end_date']
+        eatontown = form.cleaned_data['eatontown']
+        fairfield = form.cleaned_data['fairfield']
+        south_plainfield = form.cleaned_data['south_plainfield']
+
+        locations = []
+        if eatontown:
+            locations.append('Eatentown')
+        if fairfield:
+            locations.append('Fairfield')
+        if south_plainfield:
+            locations.append('South Plainfield')
+
+
+        return WIAWDP.objects.filter(date_approved__range=(start_date, end_date)).filter(location__in=locations)
 
 
 class WIAWDPView(SingleTableView):

@@ -6,7 +6,7 @@ class ViewReportForm(forms.Form):
     end_date = forms.DateField()
     eatontown = forms.BooleanField(required=False)
     fairfield = forms.BooleanField(required=False)
-    south_plainfield = forms.BooleanField(required=False)
+    south_plainfield = forms.BooleanField(required=False, label='South Plainfield')
 
 
 class FindStudentForm(forms.Form):

@@ -19,7 +19,7 @@
         {% if perms.wiawdp.change_contract %}
             {% include 'wiawdp/nav_item.html' with location='wiawdp:modify_contract_lookup' title='Modify Contract' %}
         {% endif %}
-        {% if perms.wiawdp.view_contract %}
+        {% if perms.wiawdp.view_wiawdp %}
             {% include 'wiawdp/nav_item.html' with location='wiawdp:view_report' title='View Report' %}
         {% endif %}
     </ul>
