@@ -20,6 +20,9 @@ log.name = os.path.basename(__file__)
 
 def user_login(request):
     # If the request is a HTTP POST, try to pull out the relevant information.
+    print('AUTH')
+    if request.user.is_authenticated:
+        return redirect(reverse('home:index'))
     if request.method == 'POST':
         # Gather the username and password provided by the user.
         # This information is obtained from the login form.
@@ -44,6 +47,7 @@ def user_login(request):
                 login(request, user)
                 log.name = log.name + '|' + user_login.__name__
                 log.info(f"User: {user} has logged in!")
+                print('REDIRECTING')
                 return redirect(reverse('home:index'))
             else:
                 # An inactive account was used - no logging in!
@@ -57,7 +61,7 @@ def user_login(request):
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render(request, 'registration/login.html')
+        return render(request, 'account/login.html')
 
 
 def register(request):
@@ -115,7 +119,7 @@ def register(request):
 
     # Render the template depending on the context.
     return render(request,
-                  'registration/registration_form.html',
+                  'account/registration_form.html',
                   {'user_form': user_form,
                    'profile_form': profile_form,
                    'registered': registered})
