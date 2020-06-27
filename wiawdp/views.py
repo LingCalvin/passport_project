@@ -24,7 +24,7 @@ class ActiveContractView(PermissionRequiredMixin, SingleTableView):
         user = self.request.user
         if user.has_perms('wiawdp.change_contract') or user.has_perms('wiawdp.delete_contract'):
             return {'empty_text': 'No active contracts.'}
-        return {'exclude': ('actions',), 'empty_text': 'No active contracts.'}
+        return {'exclude': ('select', 'actions'), 'empty_text': 'No active contracts.'}
 
 
 class AddContractView(PermissionRequiredMixin, CreateView):

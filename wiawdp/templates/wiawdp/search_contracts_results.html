@@ -5,8 +5,5 @@
 {% block title %}Result{% endblock %}
 {% block content %}
 <a href="{% url 'wiawdp:search_contracts' %}">New Search</a><br>
-{% include 'wiawdp/contract_confirm_delete_modal.html' %}
-<div class="card">
-    {% render_table table %}
-</div>
+{% include 'wiawdp/contract_table.html' %}
 {% endblock content %}

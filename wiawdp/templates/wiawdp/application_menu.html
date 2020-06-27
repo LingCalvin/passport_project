@@ -10,7 +10,7 @@
         {% if perms.wiawdp.view_contract %}
             {% include 'wiawdp/nav_item.html' with location='wiawdp:active_contracts' title='View Active Contracts' %}
         {% endif %}
-        {% if perms.wiawdp.view_contract %}
+        {% if perms.wiawdp.view_contract and perms.wiawdp.view_person %}
             {% include 'wiawdp/nav_item.html' with location='wiawdp:search_contracts' title='Search Contracts' %}
         {% endif %}
         {% if perms.wiawdp.add_contract %}
