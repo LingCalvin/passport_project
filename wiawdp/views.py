@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from wiawdp.forms import FindStudentForm, ViewReportForm, ModifyContractLookupForm
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from wiawdp.models import Contract, WIAWDP
 from django.views.generic import TemplateView, FormView, CreateView, UpdateView, DeleteView, View
 from datetime import datetime
@@ -170,3 +170,25 @@ class DeleteContractView(DeleteView):
 
     def get_object(self, queryset=None):
         return Contract.objects.get(pk=self.request.POST.get('pk'))
+
+class MultipleDeleteView(View):
+    http_method_names = ['post']
+    model = None
+    success_url = None
+
+    def get_next_page(self, request):
+        print(request.POST.get('next-view-name'))
+        if request.POST.get('next-view-name'):
+            return reverse(request.POST.get('next-view-name'))
+        return self.success_url
+
+    def post(self, request, *args, **kwargs):
+        row_pks = request.POST.getlist('row_pks')
+        rows = self.model.objects.filter(pk__in=row_pks)
+        rows.delete()
+        return redirect(self.get_next_page(request))
+
+class DeleteContractsView(MultipleDeleteView):
+    http_method_names = ['post']
+    success_url = reverse_lazy('wiawdp:index')
+    model = Contract

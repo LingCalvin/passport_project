@@ -1,0 +1,13 @@
+{% load render_table from django_tables2 %}
+{% if perms.wiawdp.delete_contract %}
+<form id="delete-form" method="post" action="{% url 'wiawdp:delete_contracts' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next-view-name" value="{{ request.resolver_match.view_name }}">
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#contracts-confirm-delete-modal">Delete Selected</button>
+</form>
+{% include 'wiawdp/contract_confirm_delete_modal.html' %}
+{% include 'wiawdp/contracts_confirm_delete_modal.html' %}
+{% endif %}
+<div class="card">
+    {% render_table table %}
+</div>
