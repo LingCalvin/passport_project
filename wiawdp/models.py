@@ -28,11 +28,19 @@ class Contract(models.Model):
 
 
 class WIAWDP(models.Model):
+    EATONTOWN = 'EATONTOWN'
+    FAIRFIELD = 'FAIRFIELD'
+    SOUTH_PLAINFIELD = 'SOUTH_PLAINFIELD'
+    LOCATION_CHOICES = [
+        (EATONTOWN, 'Eatontown'),
+        (FAIRFIELD, 'Fairfield'),
+        (SOUTH_PLAINFIELD, 'South Plainfield')
+    ]
     career_pathway = models.CharField(max_length=200)
     cip_code = models.CharField(max_length=7)
     program_title = models.CharField(max_length=200)
     date_approved = models.DateField()
-    location = models.CharField(max_length=200)
+    location = models.CharField(max_length=200, choices=LOCATION_CHOICES)
     # start_date = models.DateField(null=True, blank=True)
     # end_date = models.DateField(null=True, blank=True)
 

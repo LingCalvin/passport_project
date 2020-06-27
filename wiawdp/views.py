@@ -142,18 +142,17 @@ class ReportView(PermissionRequiredMixin, FormTableView):
     def filter_table_data(self, form):
         start_date = form.cleaned_data['start_date']
         end_date = form.cleaned_data['end_date']
-        eatontown = form.cleaned_data['eatontown']
-        fairfield = form.cleaned_data['fairfield']
-        south_plainfield = form.cleaned_data['south_plainfield']
+        eatontown = form.cleaned_data[WIAWDP.EATONTOWN.lower()]
+        fairfield = form.cleaned_data[WIAWDP.FAIRFIELD.lower()]
+        south_plainfield = form.cleaned_data[WIAWDP.SOUTH_PLAINFIELD.lower()]
 
         locations = []
         if eatontown:
-            locations.append('Eatentown')
+            locations.append(WIAWDP.EATONTOWN)
         if fairfield:
-            locations.append('Fairfield')
+            locations.append(WIAWDP.FAIRFIELD)
         if south_plainfield:
-            locations.append('South Plainfield')
-
+            locations.append(WIAWDP.SOUTH_PLAINFIELD)
 
         return WIAWDP.objects.filter(date_approved__range=(start_date, end_date)).filter(location__in=locations)
 
