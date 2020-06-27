@@ -7,6 +7,9 @@
         </p>
     </a>
     <ul class="nav nav-treeview">
+        {% if perms.wiawdp.view_wiawdp %}
+            {% include 'wiawdp/nav_item.html' with location='wiawdp:wiawdp' title='WIA/WDP' %}
+        {% endif %}
         {% if perms.wiawdp.view_contract %}
             {% include 'wiawdp/nav_item.html' with location='wiawdp:active_contracts' title='View Active Contracts' %}
         {% endif %}

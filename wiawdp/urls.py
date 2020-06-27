@@ -14,5 +14,6 @@ urlpatterns = [
     path('modify_contract/', ModifyContractView.as_view(), name='modify_contract'),
     path('programs/', WIAWDPView.as_view(), name='available_programs'),
     path('delete_contract/', DeleteContractView.as_view(), name='delete_contract'),
-    path('delete_contracts/', DeleteContractsView.as_view(), name='delete_contracts')
+    path('delete_contracts/', DeleteContractsView.as_view(), name='delete_contracts'),
+    path('wiawdp/', WIAWDPView.as_view(), name="wiawdp")
 ]
