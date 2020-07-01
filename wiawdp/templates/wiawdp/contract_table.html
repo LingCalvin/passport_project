@@ -9,5 +9,17 @@
 {% include 'wiawdp/contracts_confirm_delete_modal.html' %}
 {% endif %}
 <div class="card">
-    {% render_table table %}
+    <div class="card-header d-flex align-items-center">
+        <h3 class="card-title mr-auto">Contracts</h3>
+        {% if filter %}
+            <form method="get">
+                {{ filter.form}}
+                <input type="submit">
+            </form>
+        {% endif %}
+
+    </div>
+    <div class="card-body p-0">
+        {% render_table table %}
+    </div>
 </div>

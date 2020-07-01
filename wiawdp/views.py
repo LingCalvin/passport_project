@@ -7,18 +7,40 @@ from datetime import datetime
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from wiawdp.tables import ContractTable, WIAWDPTable
 from django_tables2 import SingleTableView, SingleTableMixin
+from django_filters.views import FilterView
+import django_filters
 
 
 class IndexView(TemplateView):
     template_name = 'wiawdp/index.html'
 
 
-class ActiveContractView(PermissionRequiredMixin, SingleTableView):
+class ContractFilter(django_filters.FilterSet):
+    CONTRACT_CHOICES = (
+        ('active', 'Active'),
+        ('inactive', 'Inactive')
+    )
+    end_date = django_filters.ChoiceFilter(label='Contract Status', choices=CONTRACT_CHOICES, method='filter_active')
+
+    class Meta:
+        model = Contract
+        fields = ['end_date']
+
+    def filter_active(self, queryset, name, value):
+        if value == 'active':
+            return queryset.filter(end_date__gte=datetime.today())
+        if value == 'inactive':
+            return queryset.filter(end_date__lt=datetime.today())
+        return queryset
+
+
+class ContractView(PermissionRequiredMixin, SingleTableMixin, FilterView):
     permission_required = 'wiawdp.view_contract'
-    template_name = 'wiawdp/active_contracts.html'
+    template_name = 'wiawdp/contracts.html'
     model = Contract
-    table_data = Contract.objects.filter(end_date__gte=datetime.today())
+    # table_data = Contract.objects.filter(end_date__gte=datetime.today())
     table_class = ContractTable
+    filterset_class = ContractFilter
 
     def get_table_kwargs(self):
         user = self.request.user
