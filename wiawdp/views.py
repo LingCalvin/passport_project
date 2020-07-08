@@ -45,7 +45,7 @@ class ContractView(PermissionRequiredMixin, SingleTableMixin, FilterView):
     def get_table_kwargs(self):
         user = self.request.user
         if user.has_perms('wiawdp.change_contract') or user.has_perms('wiawdp.delete_contract'):
-            return {'empty_text': 'No active contracts.'}
+            return {'empty_text': 'No results matching query.'}
         return {'exclude': ('select', 'actions'), 'empty_text': 'No active contracts.'}
 
 
